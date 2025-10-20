@@ -1,7 +1,7 @@
 {
-  "name": "contextmanager-project",
-  "version": "1.0.0",
-  "description": "MCP Server implementations for handling context for project management",
+  "name": "lm-project-management-mcp",
+  "version": "0.1.0",
+  "description": "MCP Server for project management",
   "type": "module",
   "main": "./index.js",
   "bin": {
