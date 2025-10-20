@@ -19,19 +19,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tejpalvirk/contextmanager.git"
+    "url": "git+https://github.com/DeadBranches/lm-project-management-mcp.git"
   },
   "keywords": [
     "mcp",
     "claude",
     "context"
   ],
-  "author": "Tejpal Virk",
+  "author": "DeadBranches",
+  "contributors": [
+    "Tejpal Virk"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tejpalvirk/contextmanager/issues"
+    "url": "https://github.com/DeadBranches/lm-project-management-mcp/issues"
   },
-  "homepage": "https://github.com/tejpalvirk/contextmanager#readme",
+  "homepage": "https://github.com/DeadBranches/lm-project-management-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
     "zod": "^3.22.4",
