@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./index.js",
   "bin": {
-    "contextmanager-project": "./index.js"
+    "lm-project-management-mcp": "./index.js"
   },
   "files": [
     "index.js",
