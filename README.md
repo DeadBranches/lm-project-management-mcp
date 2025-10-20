@@ -180,7 +180,7 @@ Add this to your `claude_desktop_config.json`:
       "command": "npx",
       "args": [
         "-y",
-        "github:tejpalvirk/project"
+        "github:DeadBranches/lm-project-management-mcp"
       ]
     }
   }
@@ -192,7 +192,7 @@ Add this to your `claude_desktop_config.json`:
 First, install the package globally:
 
 ```bash
-npm install -g github:tejpalvirk/project
+npm install -g github:DeadBranches/lm-project-management-mcp
 ```
 
 Then configure Claude Desktop:
@@ -231,8 +231,8 @@ Then configure Claude Desktop:
 
 ```bash
 # Clone the repository
-git clone https://github.com/tejpalvirk/contextmanager.git
-cd contextmanager
+git clone https://github.com/DeadBranches/lm-project-management-mcp.git
+cd lm-project-management-mcp
 
 # Install dependencies
 npm install
@@ -271,11 +271,11 @@ Example usage:
 
 ```bash
 # Store data in the current directory
-MEMORY_FILE_PATH="./pm-memory.json" SESSIONS_FILE_PATH="./pm-sessions.json" npx github:tejpalvirk/contextmanager-project
+MEMORY_FILE_PATH="./pm-memory.json" SESSIONS_FILE_PATH="./pm-sessions.json" npx github:DeadBranches/lm-project-management-mcp
 
 # Store data in a specific location (absolute path)
-MEMORY_FILE_PATH="/path/to/data/project-memory.json" npx github:tejpalvirk/contextmanager-project
+MEMORY_FILE_PATH="/path/to/data/project-memory.json" npx github:DeadBranches/lm-project-management-mcp
 
 # Store data in user's home directory
-MEMORY_FILE_PATH="$HOME/contextmanager/project-memory.json" npx github:tejpalvirk/contextmanager-project
-``` 
+MEMORY_FILE_PATH="$HOME/contextmanager/project-memory.json" npx github:DeadBranches/lm-project-management-mcp
+```
