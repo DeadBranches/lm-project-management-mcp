@@ -9,11 +9,12 @@
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "README.md",
     "*.txt"
   ],
   "scripts": {
-    "build": "tsc && shx chmod +x index.js && cp project_*.txt ../main/descriptions",
+    "build": "tsc && shx chmod +x index.js",
     "prepare": "npm run build",
     "start": "node index.js"
   },
