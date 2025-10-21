@@ -35,7 +35,7 @@ flowchart RL
   [milestone]"] -- depends_on --> task["Pickup birthday cake
   [task]"]
 ```
-<small>*Example 1: The Birthday Party depends on the task Pickup birthday cake. Block types are shown in [square brackets].*</small>
+<small><i>Example 1: The Birthday Party depends on the task Pickup birthday cake. Block types are shown in [square brackets].</i></small>
 
 Here, the relationship is `depends_on`.
 
@@ -59,7 +59,7 @@ flowchart RL
   2nd-car["my car
   [resource]"] -- required_for --> husband
 ```
-<small>*Example 2: One milestone. Many connections.*</small>
+<small><i>Example 2: One milestone. Many connections.</i></small>
 
 Find out about the [Relationships](relationships.md) you'll work with.
 

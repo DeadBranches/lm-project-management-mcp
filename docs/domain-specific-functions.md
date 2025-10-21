@@ -1,18 +1,7 @@
 <!-- SPDX-License-Identifier: MIT -->
 <!-- SPDX-FileCopyrightText: 2025 The DeadBranches contributors <https://github.com/DeadBranches> -->
-# LM-Project-Management MCP Documentation,<br />On *Domain Specific Functions*
-<small><i class="sm">An MCP server for managing projects using knowledge graphs.</i></small>
-<style>
-.sc {
-  font-variant-caps: small-caps;
-}
-.sup {
-  vertical-align: super;
-}
-.sm {
-  font-size: smaller;
-}
-</style>
+# LM-Project-Management MCP Documentation Contents
+<small><i>An MCP server for managing projects using knowledge graphs.</i></small>
 
 An MCP server for managing projects using knowledge graphs.
 

@@ -45,6 +45,7 @@ Sequence those demands in the order that best suits you.
     - [Environment Variables](#environment-variables)
       - [Example usage](#example-usage-1)
   - [License](#license)
+  - [Attribution \& Provenance](#attribution--provenance)
 
 
 ## Feature Details
@@ -225,4 +226,12 @@ MEMORY_FILE_PATH="$HOME/contextmanager/project-memory.json" npx github:DeadBranc
 
 ## License
 
-This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).
+
+## Attribution & Provenance
+
+Portions of this code are adapted from the work of [Tejpal Virk](https://github.com/tejpalvirk), as published in [tejpalvirk/project](https://github.com/tejpalvirk/project) (retrieved on October 18, 2025). Copyright remains with the original authors for their respective contributions. Modifications in this repository are © 2025–present DeadBranches contributors.
+
+Copyright (c) 2025 [Tejpalvirk](https://github.com/tejpalvirk)
+
+Copyright (c) 2025 The [DeadBranches Contributors](https://github.com/DeadBranches)

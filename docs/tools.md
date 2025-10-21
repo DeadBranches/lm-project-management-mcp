@@ -1,18 +1,7 @@
 <!-- SPDX-License-Identifier: MIT -->
 <!-- SPDX-FileCopyrightText: 2025 The DeadBranches contributors <https://github.com/DeadBranches> -->
 # LM-Project-Management MCP Documentation,<br />On *Tools*
-<small><i class="sm">An MCP server for managing projects using knowledge graphs.</i></small>
-<style>
-.sc {
-  font-variant-caps: small-caps;
-}
-.sup {
-  vertical-align: super;
-}
-.sm {
-  font-size: smaller;
-}
-</style>
+<small><i>An MCP server for managing projects using knowledge graphs.</i></small>
 
 *LM-Project-Management MCP* provides tools for your model to interact with.
 
@@ -22,7 +11,7 @@ It's your job to learn what your model can do.
 > In this documentation the terms, *model* and *client* are used interchangably to refer to the language model accessing the server.
 
 ## `startsession`
-<small class="sc">related: [`has_status`](entities.md#has_status), [`has_priority`](entities.md#has_priority)</small> 
+<small><sup>related: [`has_status`](entities.md#has_status), [`has_priority`](entities.md#has_priority)</sup></small>
 
 
 Start a new project management session.
