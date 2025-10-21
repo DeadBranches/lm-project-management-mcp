@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-// SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2005 Tejpavirk <https://github.com/tejpalvirk>
-// SPDX-FileCopyrightText: 2025 The DeadBranches contributors <https://github.com/DeadBranches>
-
 declare const validEntityTypes: readonly ["project", "task", "milestone", "resource", "teamMember", "note", "document", "issue", "risk", "decision", "dependency", "component", "stakeholder", "change", "status", "priority"];
 type EntityType = typeof validEntityTypes[number];
 interface Entity {
