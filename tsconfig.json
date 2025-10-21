@@ -9,6 +9,6 @@
     "declaration": true,
     "skipLibCheck": true
   },
-  "include": ["./**/*.ts"],
+  "include": ["./**/*.ts", "!./dist/**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }
