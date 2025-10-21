@@ -4,27 +4,27 @@
 
 FROM node:22.12-alpine AS builder
 
-COPY project /app
-COPY tsconfig.json /tsconfig.json
-
 WORKDIR /app
 
-RUN --mount=type=cache,target=/root/.npm npm install
+COPY package.json package-lock.json tsconfig.json ./
+COPY index.ts ./
+COPY project_*.txt ./
 
-RUN --mount=type=cache,target=/root/.npm-production npm ci --ignore-scripts --omit-dev
+RUN --mount=type=cache,target=/root/.npm npm ci
+RUN npm run build
 
 FROM node:22-alpine AS release
 
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/package.json /app/package.json
-COPY --from=builder /app/package-lock.json /app/package-lock.json
-COPY --from=builder /app/memory.json /app/memory.json
-
 ENV NODE_ENV=production
 ENV MEMORY_FILE_PATH=/app/memory.json
+ENV SESSIONS_FILE_PATH=/app/sessions.json
 
 WORKDIR /app
 
-RUN npm ci --ignore-scripts --omit-dev
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
-ENTRYPOINT ["node", "dist/project_index.js"] 
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/project_*.txt ./
+
+ENTRYPOINT ["node", "dist/index.js"]
