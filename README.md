@@ -38,9 +38,11 @@ Sequence those demands in the order that best suits you.
     - [Loading Project Context](#loading-project-context)
     - [Recording Session Results](#recording-session-results)
     - [Managing Project Knowledge](#managing-project-knowledge)
+  - [Quick Start](#quick-start)
+    - [Using npm](#using-npm)
+    - [Using Docker](#using-docker)
   - [Install](#install)
     - [Bare Metal](#bare-metal)
-    - [Docker](#docker)
   - [Setup](#setup)
     - [Environment Variables](#environment-variables)
       - [Example usage](#example-usage-1)
@@ -176,29 +178,47 @@ Use prompts with your client to trigger the mcp server's various functions.
 <small>Example 2</small>
 > "Update the status of the "Database Migration" task to "completed" and add an observation that it was finished ahead of schedule."
 
-## Install
+## Quick Start
 
-### Bare Metal
+### Using npm
 ```bash
 # Clone the repository
 git clone https://github.com/DeadBranches/lm-project-management-mcp.git
 cd lm-project-management-mcp
 
-# Install dependencies
+# Install dependencies (requires the included package-lock.json)
 npm install
 
-# Build the server
+# Build the TypeScript sources to dist/
 npm run build
 
-# Run the server
-cd project
-node project_index.js
+# Start the MCP server (outputs live in dist/)
+npm start
 ```
 
-### Docker
-
+### Using Docker
 ```bash
-docker build -t lm-project-management-mcp -f project/Dockerfile .
+# Build the image from the repository root Dockerfile
+docker build -t lm-project-management-mcp .
+
+# Run the container and persist data to the host
+docker run \
+  --rm \
+  -e MEMORY_FILE_PATH=/app/data/memory.json \
+  -e SESSIONS_FILE_PATH=/app/data/sessions.json \
+  -v "$(pwd)/data:/app/data" \
+  lm-project-management-mcp
+```
+The Docker build expects the repository's existing `package-lock.json` to be present so that `npm ci` can resolve dependencies.
+Mount a host directory into `/app/data` (or another target directory) to keep `memory.json` and `sessions.json` between runs, and
+configure the corresponding `MEMORY_FILE_PATH` / `SESSIONS_FILE_PATH` environment variables to point at the mounted location.
+
+## Install
+
+### Bare Metal
+```bash
+# Install globally without cloning
+npx github:DeadBranches/lm-project-management-mcp
 ```
 
 ## Setup
@@ -208,8 +228,8 @@ You may wish to customize where data is stored. The following environmental vari
 
 | Environmental Variable | Description |
 | --- | --- |
-| `MEMORY_FILE_PATH` | <p>Path where the knowledge graph data will be stored.</p>  <p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./project/memory.json`** |
-| `SESSIONS_FILE_PATH` | <p>Path where session data will be stored</p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./project/sessions.json`** |
+| `MEMORY_FILE_PATH` | <p>Path where the knowledge graph data will be stored.</p>  <p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./dist/memory.json`** when running the compiled binary (or alongside the executable when installed elsewhere). |
+| `SESSIONS_FILE_PATH` | <p>Path where session data will be stored</p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./dist/sessions.json`** when running the compiled binary (or alongside the executable when installed elsewhere). |
 
 #### Example usage
 
