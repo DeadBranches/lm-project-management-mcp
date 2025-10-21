@@ -1,21 +1,10 @@
 <!-- SPDX-License-Identifier: MIT -->
 <!-- SPDX-FileCopyrightText: 2025 The DeadBranches contributors <https://github.com/DeadBranches> -->
 # LM-Project-Management MCP Documentation Contents
-<small><i class="sm">An MCP server for managing projects using knowledge graphs.</i></small>
-<style>
-.sc {
-  font-variant-caps: small-caps;
-}
-.sup {
-  vertical-align: super;
-}
-.sm {
-  font-size: smaller;
-}
-</style>
+<small><i>An MCP server for managing projects using knowledge graphs.</i></small>
 
 ## 1. Entities
-<small class="sc sup">See: [Entities](docs/entities.md)</small>
+<small><sup>See: [Entities](docs/entities.md)</sup></small>
 
 > <big>Everything is a block.</big>
 
@@ -32,7 +21,7 @@ Blocks are the core unit of the project graph.
 
 
 ## 2. Relationships
-<small class="sc sup">See: [Relationships](docs/relationships.md)</small>
+<small><sup>See: [Relationships](docs/relationships.md)</sup></small>
 
 You can connect any two blocks together.
 
@@ -75,10 +64,11 @@ flowchart RL
 Find out about the [Relationships](relationships.md) you'll work with.
 
 ## 3. Tools
-<small class="sc sup">Link to [Tools](docs/tools.md) page.</small>
+<small><sup>Link to [Tools](docs/tools.md) page.</sup></small>
 
 Your model receives tools from the mcp server. It uses those tools to interact with your data.
 
 It's your job to learn what your model can do with those tools. We'll show you what to say to encourage the use of given tool.
+
 
 Find out more about [Tools](tools.md).
