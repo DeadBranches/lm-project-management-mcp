@@ -230,7 +230,7 @@ This project is licensed under the MIT License. See [LICENSE](./LICENSE).
 
 ## Attribution & Provenance
 
-Portions of this code are adapted from the work of [Tejpal Virk](https://github.com/tejpalvirk), as published in [tejpalvirk/project](https://github.com/tejpalvirk/project) (retrieved on October 18, 2025). Copyright remains with the original authors for their respective contributions. Modifications in this repository are © 2025–present DeadBranches contributors.
+Portions of this code are adapted from the work of [Tejpal Virk](https://github.com/tejpalvirk), as published in [tejpalvirk/project](https://github.com/tejpalvirk/project) (retrieved on October 19, 2025 at commit f00e9d3). Copyright remains with the original authors for their respective contributions. Modifications in this repository are © 2025–present DeadBranches contributors.
 
 Copyright (c) 2025 [Tejpalvirk](https://github.com/tejpalvirk)
 
