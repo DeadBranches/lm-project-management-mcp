@@ -4,6 +4,13 @@ node_modules/
 # Build output
 /dist/
 
+# Build caches
+/.turbo/
+/.cache/
+/.parcel-cache
+parcel-cache
+.eslintcache
+
 # Runtime data
 memory.json
 sessions.json
