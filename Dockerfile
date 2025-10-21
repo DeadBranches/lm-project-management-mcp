@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2005 Tejpavirk <https://github.com/tejpalvirk>
+# SPDX-FileCopyrightText: 2025 The DeadBranches contributors <https://github.com/DeadBranches>
+
 FROM node:22.12-alpine AS builder
 
 COPY project /app
