@@ -15,7 +15,8 @@
   "scripts": {
     "build": "tsc && shx chmod +x dist/index.js",
     "prepare": "npm run build",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "tsx --test tests/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,11 @@
   "homepage": "https://github.com/DeadBranches/lm-project-management-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
+    "chalk": "^5.3.0",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2",
     "zod": "^3.22.4",
-    "yargs": "^17.7.2",
-    "chalk": "^5.3.0"
+    "yargs": "^17.7.2"
   },
   "bundledDependencies": [
     "@modelcontextprotocol/sdk",
@@ -51,6 +54,7 @@
     "@types/node": "^18.15.3",
     "@types/yargs": "^17.0.33",
     "shx": "^0.3.4",
+    "tsx": "^4.7.2",
     "typescript": "^5.0.2"
   }
 }

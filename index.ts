@@ -21,6 +21,14 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, existsSync } from "fs";
 
+import { createLoggerFactory } from "./src/logging/index.js";
+
+const loggerFactory = createLoggerFactory({ name: "lm-project-management-mcp" });
+const logger = loggerFactory.root;
+const sessionLogger = logger.createChild({ name: "session" });
+const workflowLogger = logger.createChild({ name: "workflow" });
+const bootstrapLogger = logger.createChild({ name: "bootstrap" });
+
 // Define memory file path using environment variable with fallback
 const parentPath = path.dirname(fileURLToPath(import.meta.url));
 const defaultMemoryPath = path.join(parentPath, 'memory.json');
@@ -2351,7 +2359,10 @@ To load specific project context, use the \`loadcontext\` tool with the project 
           if (sessionId) {
             const sessionStates = await loadSessionStates();
             if (!sessionStates.has(sessionId)) {
-              console.warn(`Warning: Session ${sessionId} not found, but proceeding with context load`);
+              sessionLogger.warn(
+                { sessionId, entityName, entityType },
+                "Session not found; proceeding with context load"
+              );
               // Initialize it anyway for more robustness
               sessionStates.set(sessionId, []);
               await saveSessionStates(sessionStates);
@@ -3129,7 +3140,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(taskUpdate.name, [`Progress: ${taskUpdate.progress}`]);
                   }
                 } catch (error) {
-                  console.error(`Error updating task ${taskUpdate.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, task: taskUpdate.name },
+                    "Failed to update task"
+                  );
                 }
               }));
               
@@ -3154,7 +3168,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(project, [projectObservation]);
                   }
                 } catch (error) {
-                  console.error(`Error updating project ${project}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, project },
+                    "Failed to update project"
+                  );
                 }
               }
               
@@ -3207,7 +3224,10 @@ ${outgoingText}`;
                   
                   return task.name;
                 } catch (error) {
-                  console.error(`Error creating task ${task.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, task: task.name },
+                    "Failed to create task"
+                  );
                   return null;
                 }
               }));
@@ -3245,7 +3265,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(risk.name, [`Impact: ${risk.impact}`, `Probability: ${risk.probability}`]);
                   }
                 } catch (error) {
-                  console.error(`Error updating risk ${risk.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, risk: risk.name },
+                    "Failed to update risk"
+                  );
                 }
               }));
               
@@ -3674,16 +3697,16 @@ Would you like me to perform any additional updates to your project knowledge gr
     await server.connect(transport);
 
   } catch (error) {
-    console.error("Error starting server:", error);
+    bootstrapLogger.error({ err: error }, "Error starting server");
     process.exit(1);
   }
 }
 
 // Start the server
 main().catch(error => {
-  console.error('Fatal error:', error);
+  bootstrapLogger.fatal({ err: error }, "Fatal error during startup");
   process.exit(1);
-}); 
+});
 
 // Export the KnowledgeGraphManager class for testing
-export { KnowledgeGraphManager }; 
+export { KnowledgeGraphManager };
