@@ -230,6 +230,8 @@ You may wish to customize where data is stored. The following environmental vari
 | --- | --- |
 | `MEMORY_FILE_PATH` | <p>Path where the knowledge graph data will be stored.</p>  <p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./dist/memory.json`** when running the compiled binary (or alongside the executable when installed elsewhere). |
 | `SESSIONS_FILE_PATH` | <p>Path where session data will be stored</p>Can be absolute or relative (relative paths use current working directory)</p>Default: **`./dist/sessions.json`** when running the compiled binary (or alongside the executable when installed elsewhere). |
+| `LOG_LEVEL` | <p>Controls the verbosity of runtime logs. Supports standard Pino levels such as `fatal`, `error`, `warn`, `info`, `debug`, `trace`, and `silent`.</p>Default: **`info`**. |
+| `LOG_PRETTY` | <p>Enable pretty-printed logs when set to a truthy value (`1`, `true`, `yes`, etc.). Logs remain JSON-formatted when unset or explicitly falsey.</p>Default: **`false`**. |
 
 #### Example usage
 
@@ -242,6 +244,9 @@ MEMORY_FILE_PATH="/path/to/data/project-memory.json" npx github:DeadBranches/lm-
 
 # Store data in user's home directory
 MEMORY_FILE_PATH="$HOME/contextmanager/project-memory.json" npx github:DeadBranches/lm-project-management-mcp
+
+# Enable verbose, human-readable logging
+LOG_LEVEL="debug" LOG_PRETTY="true" npx github:DeadBranches/lm-project-management-mcp
 ```
 
 ## License
