@@ -21,13 +21,14 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, existsSync } from "fs";
 
-import { createLoggerFactory } from "./src/logging/index.js";
+import { createLoggerFactory, type AppLogger } from "./src/logging/index.js";
 
 const loggerFactory = createLoggerFactory({ name: "lm-project-management-mcp" });
 const logger = loggerFactory.root;
 const sessionLogger = logger.createChild({ name: "session" });
 const workflowLogger = logger.createChild({ name: "workflow" });
 const bootstrapLogger = logger.createChild({ name: "bootstrap" });
+const knowledgeLogger = logger.createChild({ name: "knowledge" });
 
 // Define memory file path using environment variable with fallback
 const parentPath = path.dirname(fileURLToPath(import.meta.url));
@@ -202,18 +203,40 @@ interface KnowledgeGraph {
 type Embedding = number[];
 
 class KnowledgeGraphManager {
+  constructor(private readonly logger: AppLogger | null = null) {}
+
   public async loadGraph(): Promise<KnowledgeGraph> {
     try {
       const fileContent = await fs.readFile(MEMORY_FILE_PATH, 'utf-8');
       return JSON.parse(fileContent);
     } catch (error) {
-      // If file doesn't exist or is invalid, return an empty graph
+      const err = error as NodeJS.ErrnoException;
+      if (err && typeof err === "object" && err.code === "ENOENT") {
+        this.logger?.debug(
+          { err },
+          "Graph storage file missing; returning empty graph"
+        );
+      } else {
+        this.logger?.error(
+          { err },
+          "Failed to load graph from storage; returning empty graph"
+        );
+      }
+
       return { entities: [], relations: [] };
     }
   }
 
   private async saveGraph(graph: KnowledgeGraph): Promise<void> {
-    await fs.writeFile(MEMORY_FILE_PATH, JSON.stringify(graph, null, 2), 'utf-8');
+    try {
+      await fs.writeFile(MEMORY_FILE_PATH, JSON.stringify(graph, null, 2), 'utf-8');
+    } catch (error) {
+      this.logger?.error(
+        { err: error },
+        "Failed to persist graph to storage"
+      );
+      throw error;
+    }
   }
 
   // Initialize status and priority entities
@@ -2136,7 +2159,7 @@ class KnowledgeGraphManager {
 // Setup the MCP server
 async function main() {
   try {
-    const knowledgeGraphManager = new KnowledgeGraphManager();
+    const knowledgeGraphManager = new KnowledgeGraphManager(knowledgeLogger);
     
     // Initialize status and priority entities
     await knowledgeGraphManager.initializeStatusAndPriority();
