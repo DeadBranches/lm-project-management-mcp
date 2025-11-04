@@ -48,7 +48,9 @@
     "@modelcontextprotocol/sdk",
     "zod",
     "yargs",
-    "chalk"
+    "chalk",
+    "pino",
+    "pino-pretty"
   ],
   "devDependencies": {
     "@types/node": "^18.15.3",
