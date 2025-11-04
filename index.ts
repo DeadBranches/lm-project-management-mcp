@@ -21,6 +21,21 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, existsSync } from "fs";
 
+import { createLoggerFactory } from "./src/logging/index.js";
+import type { AppLogger } from "./src/logging/index.js";
+
+const loggerFactory = createLoggerFactory({ name: "lm-project-management-mcp" });
+const logger = loggerFactory.root;
+const bootstrapLogger = logger.createChild({ name: "bootstrap" });
+const sessionLogger = logger.createChild({ name: "session" });
+const workflowLogger = logger.createChild({ name: "workflow" });
+const knowledgeLogger = logger.createChild({ name: "knowledge" });
+
+bootstrapLogger.info(
+  { level: loggerFactory.level, pretty: loggerFactory.pretty },
+  "Logger factory initialized"
+);
+
 // Define memory file path using environment variable with fallback
 const parentPath = path.dirname(fileURLToPath(import.meta.url));
 const defaultMemoryPath = path.join(parentPath, 'memory.json');
@@ -194,18 +209,31 @@ interface KnowledgeGraph {
 type Embedding = number[];
 
 class KnowledgeGraphManager {
+  constructor(private readonly logger: AppLogger | null = null) {}
+
   public async loadGraph(): Promise<KnowledgeGraph> {
     try {
       const fileContent = await fs.readFile(MEMORY_FILE_PATH, 'utf-8');
       return JSON.parse(fileContent);
     } catch (error) {
+      const err = error;
+      if (err && typeof err === "object" && "code" in err && (err as NodeJS.ErrnoException).code === "ENOENT") {
+        this.logger?.debug({ err }, "Graph storage file missing; returning empty graph");
+      } else {
+        this.logger?.error({ err }, "Failed to load graph from storage; returning empty graph");
+      }
       // If file doesn't exist or is invalid, return an empty graph
       return { entities: [], relations: [] };
     }
   }
 
   private async saveGraph(graph: KnowledgeGraph): Promise<void> {
-    await fs.writeFile(MEMORY_FILE_PATH, JSON.stringify(graph, null, 2), 'utf-8');
+    try {
+      await fs.writeFile(MEMORY_FILE_PATH, JSON.stringify(graph, null, 2), 'utf-8');
+    } catch (error) {
+      this.logger?.error({ err: error }, "Failed to persist graph to storage");
+      throw error;
+    }
   }
 
   // Initialize status and priority entities
@@ -2128,12 +2156,16 @@ class KnowledgeGraphManager {
 // Setup the MCP server
 async function main() {
   try {
-    const knowledgeGraphManager = new KnowledgeGraphManager();
-    
+    bootstrapLogger.info("Starting MCP server bootstrap");
+    const knowledgeGraphManager = new KnowledgeGraphManager(knowledgeLogger);
+    knowledgeLogger.info("Knowledge graph manager initialized");
+
     // Initialize status and priority entities
     await knowledgeGraphManager.initializeStatusAndPriority();
-    
+    knowledgeLogger.debug("Status and priority entities ensured");
+
     // Create the MCP server with a name and version
+    bootstrapLogger.info("Creating MCP server instance");
     const server = new McpServer({
       name: "Context Manager",
       version: "1.0.0"
@@ -2351,7 +2383,10 @@ To load specific project context, use the \`loadcontext\` tool with the project 
           if (sessionId) {
             const sessionStates = await loadSessionStates();
             if (!sessionStates.has(sessionId)) {
-              console.warn(`Warning: Session ${sessionId} not found, but proceeding with context load`);
+              sessionLogger.warn(
+                { sessionId, entityName, entityType },
+                "Session not found; proceeding with context load"
+              );
               // Initialize it anyway for more robustness
               sessionStates.set(sessionId, []);
               await saveSessionStates(sessionStates);
@@ -3129,7 +3164,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(taskUpdate.name, [`Progress: ${taskUpdate.progress}`]);
                   }
                 } catch (error) {
-                  console.error(`Error updating task ${taskUpdate.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, task: taskUpdate.name },
+                    "Failed to update task"
+                  );
                 }
               }));
               
@@ -3154,7 +3192,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(project, [projectObservation]);
                   }
                 } catch (error) {
-                  console.error(`Error updating project ${project}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, project },
+                    "Failed to update project"
+                  );
                 }
               }
               
@@ -3207,7 +3248,10 @@ ${outgoingText}`;
                   
                   return task.name;
                 } catch (error) {
-                  console.error(`Error creating task ${task.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, task: task.name },
+                    "Failed to create task"
+                  );
                   return null;
                 }
               }));
@@ -3245,7 +3289,10 @@ ${outgoingText}`;
                     await knowledgeGraphManager.addObservations(risk.name, [`Impact: ${risk.impact}`, `Probability: ${risk.probability}`]);
                   }
                 } catch (error) {
-                  console.error(`Error updating risk ${risk.name}: ${error}`);
+                  workflowLogger.error(
+                    { err: error, risk: risk.name },
+                    "Failed to update risk"
+                  );
                 }
               }));
               
@@ -3671,19 +3718,21 @@ Would you like me to perform any additional updates to your project knowledge gr
 
     // Connect the server to the transport
     const transport = new StdioServerTransport();
+    bootstrapLogger.info("Connecting MCP server to stdio transport");
     await server.connect(transport);
+    bootstrapLogger.info("MCP server connected to stdio transport");
 
   } catch (error) {
-    console.error("Error starting server:", error);
+    bootstrapLogger.error({ err: error }, "Error starting server");
     process.exit(1);
   }
 }
 
 // Start the server
 main().catch(error => {
-  console.error('Fatal error:', error);
+  bootstrapLogger.fatal({ err: error }, "Fatal error during startup");
   process.exit(1);
-}); 
+});
 
 // Export the KnowledgeGraphManager class for testing
-export { KnowledgeGraphManager }; 
+export { KnowledgeGraphManager };
